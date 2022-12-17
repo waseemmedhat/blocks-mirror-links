@@ -58,6 +58,12 @@
 		Simply get the bl.ocks.org or gist link URL into the input field and open any of the generated
 		links below it.
 	</p>
+
+	<p class="github">
+		<a href="https://github.com/waseemmedhat/blocks-mirror-links" target="_blank" rel="noreferrer">
+			<img src="/github-mark.svg" alt="GitHub" />
+		</a>
+	</p>
 </div>
 
 <style>
@@ -105,5 +111,16 @@
 	li {
 		list-style-type: circle;
 		margin: 0.25rem 0;
+	}
+
+	.github {
+		margin-top: 3rem;
+	}
+
+	.github:hover {
+		opacity: 0.8;
+	}
+	.github img {
+		height: 25px;
 	}
 </style>
