@@ -9,13 +9,23 @@
 	let urls = urlRoots;
 
 	let input;
+	let invalidClass = '';
 	onMount(() => input.focus());
 
 	const blocksRoot = 'https://bl.ocks.org/';
 	const gistRoot = 'https://gist.github.com/';
 
 	const updateLinks = (e) => {
-		const url = e.target.value.replace(blocksRoot, '').replace(gistRoot, '');
+		const urlInput = e.target.value;
+		const invalidInput = !(urlInput.startsWith(blocksRoot) || urlInput.startsWith(gistRoot));
+
+		if (urlInput && invalidInput) {
+			invalidClass = 'invalid';
+			return;
+		}
+
+		invalidClass = '';
+		const url = urlInput.replace(blocksRoot, '').replace(gistRoot, '');
 		urls = urlRoots.map((urlRoot) => urlRoot + url);
 	};
 </script>
@@ -25,12 +35,15 @@
 <div class="container">
 	<h1><code>bl.ocks.org</code><br />Mirror Links</h1>
 
-	<input
-		type="text"
-		placeholder="bl.ocks.org or gist URL"
-		bind:this={input}
-		on:input={updateLinks}
-	/>
+	<div class="input-container">
+		<input
+			type="text"
+			placeholder="bl.ocks.org or gist URL"
+			bind:this={input}
+			on:input={updateLinks}
+		/>
+		<p class="alert {invalidClass}">Invalid URL</p>
+	</div>
 
 	<h2>Mirrors</h2>
 	<ul>
@@ -63,10 +76,24 @@
 		letter-spacing: 0.06rem;
 	}
 
+	.input-container {
+		margin: 1rem 0;
+	}
+
+	.alert {
+		margin: 0.2rem 0;
+		color: hsl(0, 63%, 54%);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.alert.invalid {
+		opacity: 1;
+	}
+
 	input {
 		height: 2rem;
 		width: min(35rem, 100%);
-		margin: 1rem 0;
 		padding: 0.2rem 0.5rem;
 		border-radius: 0.2rem;
 	}
