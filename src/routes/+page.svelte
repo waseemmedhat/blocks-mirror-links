@@ -1,17 +1,49 @@
-<div class="container">
-	<h1><code>bl.ocks.org</code><br />Link Mirrors</h1>
+<script>
+	import { onMount } from 'svelte';
 
-	<input type="text" placeholder="Enter bl.ocks.org URL" />
+	const urlRoots = [
+		'https://blocks.roadtolarissa.com/',
+		'https://web.archive.org/web/20221201044944/https://bl.ocks.org/'
+	];
+
+	let urls = urlRoots;
+
+	let input;
+	onMount(() => input.focus());
+
+	const blocksRoot = 'https://bl.ocks.org/';
+	const gistRoot = 'https://gist.github.com/';
+
+	const updateLinks = (e) => {
+		const url = e.target.value.replace(blocksRoot, '').replace(gistRoot, '');
+		urls = urlRoots.map((urlRoot) => urlRoot + url);
+	};
+</script>
+
+<svelte:head><title>bl.ocks.org Mirror Links</title></svelte:head>
+
+<div class="container">
+	<h1><code>bl.ocks.org</code><br />Mirror Links</h1>
+
+	<input
+		type="text"
+		placeholder="bl.ocks.org or gist URL"
+		bind:this={input}
+		on:input={updateLinks}
+	/>
 
 	<h2>Mirrors</h2>
 	<ul>
-		<li />
-		<li />
+		{#each urls as url}
+			<li><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
+		{/each}
 	</ul>
 
 	<p>
 		The official bl.ocks.org is currently down (more precisely, it redirects to GitHub Gists). This
-		tool simply generates link for bl.ocks.org mirrors
+		tool simplifies the process of finding your block of interest in another bl.ocks.org clone.
+		Simply get the bl.ocks.org or gist link URL into the input field and open any of the generated
+		links below it.
 	</p>
 </div>
 
@@ -25,6 +57,10 @@
 	h1,
 	h2 {
 		font-weight: 400;
+	}
+
+	code {
+		letter-spacing: 0.06rem;
 	}
 
 	input {
@@ -41,5 +77,6 @@
 
 	li {
 		list-style-type: circle;
+		margin: 0.25rem 0;
 	}
 </style>
