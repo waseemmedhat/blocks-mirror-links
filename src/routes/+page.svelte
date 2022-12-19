@@ -2,8 +2,9 @@
 	import { onMount } from 'svelte';
 
 	const urlRoots = [
-		'https://blocks.roadtolarissa.com/',
-		'https://web.archive.org/web/20221201044944/https://bl.ocks.org/'
+		'https://blocks.roadtolarissa.com',
+		'https://web.archive.org/web/20221201044944/https://bl.ocks.org',
+		'https://bl.ockss.org'
 	];
 
 	let urls = urlRoots;
@@ -25,8 +26,13 @@
 		}
 
 		invalidClass = '';
-		const url = urlInput.replace(blocksRoot, '').replace(gistRoot, '');
-		urls = urlRoots.map((urlRoot) => urlRoot + url);
+
+		const path = urlInput ? new URL(urlInput).pathname.substring(1) : '';
+
+		urls = urlRoots.map((urlRoot) => {
+			if (urlRoot.includes('bl.ockss')) return `${urlRoot}/${path.replace('/', '/raw/')}`;
+			return `${urlRoot}/${path}`;
+		});
 	};
 </script>
 
